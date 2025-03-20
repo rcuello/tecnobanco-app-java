@@ -1,0 +1,22 @@
+# Archivos generados por el IDE
+.classpath
+.project
+.settings
+target/
+*.iml
+
+# Archivos de caché de Maven
+*.jar.lastUpdated
+*.repositories
+
+# Archivos de logs
+*.log
+*.out
+
+# Archivos de compilación de Java (opcional, pero buena práctica)
+*.class
+
+# Otros archivos que podrías querer ignorar
+.DS_Store
+*.bak
+*.tmp
