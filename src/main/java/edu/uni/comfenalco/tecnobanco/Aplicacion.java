@@ -7,6 +7,9 @@ import java.util.Scanner;
 
 public class Aplicacion {
     static double saldoUsuario = 20000;
+    static String usuarioAutenticadoNombre = "usuario";
+    static String usuarioAutenticadoClave = "1234";
+    static String usuarioAutenticadoIdentificacion = "USR007";
 
     public static void main(String[] args) {
 
@@ -25,7 +28,7 @@ public class Aplicacion {
         char[] passwordArray = console.readPassword("Ingrese su contraseña: ");
         String usuarioClave = new String(passwordArray);
 
-        if (usuarioNombre.equals("usuario") && usuarioClave.equals("1234")) {
+        if (usuarioNombre.equals(usuarioAutenticadoNombre) && usuarioClave.equals(usuarioAutenticadoClave)) {
             System.out.println(" ===============================");
             System.out.println("|  OPERACION COMPLETADA         |");
             System.out.println("|  Ha iniciado sesión con éxito |");
@@ -63,7 +66,7 @@ public class Aplicacion {
                         mostrarSaldo();
                         break;
                     case 4:
-                        System.out.println("TODO: Mostrar informacion del usuario");
+                        mostrarInformacionUsuario();
                         break;
                     case 5:
                         System.out.println("Saliendo del sistema...");
@@ -81,6 +84,18 @@ public class Aplicacion {
 
     public static void mostrarSaldo() {
         System.out.println("Su saldo actual es: " + formatearMoneda(saldoUsuario));
+    }
+
+    public static void mostrarInformacionUsuario() {
+        String saldoFormateado = formatearMoneda(saldoUsuario);
+
+        System.out.println("+-------------------------------+");
+        System.out.println("| ** Información del Usuario ** |");
+        System.out.println("+-------------------------------+");
+        System.out.println("* Nombre de usuario: " + usuarioAutenticadoNombre);
+        System.out.println("* ID de usuario: " + usuarioAutenticadoIdentificacion);
+        System.out.println("* Saldo actual: " + saldoFormateado);
+        System.out.println("+-------------------------------+");
     }
 
     // Método para formatear números como moneda
