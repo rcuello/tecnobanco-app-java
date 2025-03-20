@@ -82,15 +82,6 @@ public class Aplicacion {
         }
     }
 
-    public static Usuario crearUsuario(){
-        Usuario usuario = new Usuario();
-        usuario.setNombre("usuario");
-        usuario.setClave("1234");
-        usuario.setIdentificacion("USR007");
-        usuario.setSaldo(0);
-        return usuario;
-    }
-
     public static void realizarTransferencia(Scanner scanner) {
         System.out.print("Ingrese el monto a transferir: ");
         double monto = scanner.nextDouble();
