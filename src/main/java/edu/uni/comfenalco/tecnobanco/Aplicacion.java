@@ -1,9 +1,8 @@
 package edu.uni.comfenalco.tecnobanco;
 
 import java.io.Console;
-import java.text.NumberFormat;
-import java.util.Locale;
 import java.util.Scanner;
+import edu.uni.comfenalco.tecnobanco.util.FormateadorMoneda; // Importamos la clase FormateadorMoneda
 
 public class Aplicacion {
     static double saldoUsuario = 0;
@@ -89,7 +88,7 @@ public class Aplicacion {
         if (monto > 0) {
             if (monto <= saldoUsuario) {
                 saldoUsuario -= monto;
-                String saldoFormateado = formatearMoneda(saldoUsuario);
+                String saldoFormateado = FormateadorMoneda.formatear(saldoUsuario);
                 System.out.println("Transferencia realizada con éxito. Su nuevo saldo es: " + saldoFormateado);
             } else {
                 System.out.println("Saldo insuficiente para realizar la transferencia.");
@@ -105,7 +104,7 @@ public class Aplicacion {
 
         if (monto > 0) {
             saldoUsuario += monto;
-            String saldoFormateado = formatearMoneda(saldoUsuario);
+            String saldoFormateado = FormateadorMoneda.formatear(saldoUsuario);
             System.out.println("Depósito realizado con éxito. Su nuevo saldo es: " + saldoFormateado);
         } else {
             System.out.println("El monto debe ser mayor que 0.");
@@ -113,11 +112,11 @@ public class Aplicacion {
     }
 
     public static void mostrarSaldo() {
-        System.out.println("Su saldo actual es: " + formatearMoneda(saldoUsuario));
+        System.out.println("Su saldo actual es: " + FormateadorMoneda.formatear(saldoUsuario));
     }
 
     public static void mostrarInformacionUsuario() {
-        String saldoFormateado = formatearMoneda(saldoUsuario);
+        String saldoFormateado = FormateadorMoneda.formatear(saldoUsuario);
 
         System.out.println("+-------------------------------+");
         System.out.println("| ** Información del Usuario ** |");
@@ -126,11 +125,5 @@ public class Aplicacion {
         System.out.println("* ID de usuario: " + usuarioAutenticadoIdentificacion);
         System.out.println("* Saldo actual: " + saldoFormateado);
         System.out.println("+-------------------------------+");
-    }
-
-    // Método para formatear números como moneda
-    public static String formatearMoneda(double cantidad) {
-        NumberFormat formatoMoneda = NumberFormat.getCurrencyInstance(Locale.getDefault());
-        return formatoMoneda.format(cantidad);
-    }
+    }    
 }
