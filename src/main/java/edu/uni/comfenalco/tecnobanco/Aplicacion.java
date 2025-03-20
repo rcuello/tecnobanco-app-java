@@ -8,8 +8,8 @@ import edu.uni.comfenalco.tecnobanco.repositorio.UsuarioRepositorio; // Importam
 import edu.uni.comfenalco.tecnobanco.util.FormateadorMoneda; // Importamos la clase FormateadorMoneda
 
 public class Aplicacion {
-     // Obtenemos el usuario autenticado del repositorio
-     private static Usuario usuarioAutenticado = UsuarioRepositorio.obtenerUsuarioAutenticado();
+
+    private static Usuario usuarioAutenticado;
 
     public static void main(String[] args) {
 
@@ -28,7 +28,9 @@ public class Aplicacion {
         char[] passwordArray = console.readPassword("Ingrese su contraseña: ");
         String usuarioClave = new String(passwordArray);
 
-        if (usuarioNombre.equals(usuarioAutenticado.getNombre()) && usuarioClave.equals(usuarioAutenticado.getClave())) {
+        usuarioAutenticado = UsuarioRepositorio.obtenerUsuarioAutenticado(usuarioNombre, usuarioClave);
+
+        if (usuarioAutenticado != null) {
             System.out.println(" ===============================");
             System.out.println("|  OPERACION COMPLETADA         |");
             System.out.println("|  Ha iniciado sesión con éxito |");
@@ -89,8 +91,8 @@ public class Aplicacion {
         if (monto > 0) {
             if (monto <= usuarioAutenticado.getSaldo()) {
                 double nuevoSaldoUsuario = usuarioAutenticado.getSaldo() - monto;
-                
-                //Colocar nuevo saldo al usuario autenticado
+
+                // Colocar nuevo saldo al usuario autenticado
                 usuarioAutenticado.setSaldo(nuevoSaldoUsuario);
 
                 // Obtenemos el saldo del usuario autenticado
@@ -109,10 +111,10 @@ public class Aplicacion {
         System.out.print("Ingrese el monto a depositar: ");
         double monto = scanner.nextDouble();
 
-        if (monto > 0) {            
+        if (monto > 0) {
             double nuevoSaldoUsuario = usuarioAutenticado.getSaldo() + monto;
 
-            //Colocar nuevo saldo al usuario autenticado
+            // Colocar nuevo saldo al usuario autenticado
             usuarioAutenticado.setSaldo(nuevoSaldoUsuario);
 
             // Obtenemos el saldo del usuario autenticado
@@ -137,5 +139,5 @@ public class Aplicacion {
         System.out.println("* ID de usuario: " + usuarioAutenticado.getIdentificacion());
         System.out.println("* Saldo actual: " + saldoFormateado);
         System.out.println("+-------------------------------+");
-    }    
+    }
 }
