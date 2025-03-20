@@ -4,11 +4,12 @@ import java.io.Console;
 import java.util.Scanner;
 
 import edu.uni.comfenalco.tecnobanco.modelo.Usuario;// Importamos la clase Usuario
+import edu.uni.comfenalco.tecnobanco.repositorio.UsuarioRepositorio; // Importamos la clase UsuarioRepositorio
 import edu.uni.comfenalco.tecnobanco.util.FormateadorMoneda; // Importamos la clase FormateadorMoneda
 
 public class Aplicacion {
-    // Creamos un usuario autenticado
-    private static Usuario usuarioAutenticado = crearUsuario();
+     // Obtenemos el usuario autenticado del repositorio
+     private static Usuario usuarioAutenticado = UsuarioRepositorio.obtenerUsuarioAutenticado();
 
     public static void main(String[] args) {
 
