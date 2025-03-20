@@ -2,13 +2,13 @@ package edu.uni.comfenalco.tecnobanco;
 
 import java.io.Console;
 import java.util.Scanner;
+
+import edu.uni.comfenalco.tecnobanco.modelo.Usuario;// Importamos la clase Usuario
 import edu.uni.comfenalco.tecnobanco.util.FormateadorMoneda; // Importamos la clase FormateadorMoneda
 
 public class Aplicacion {
-    static double saldoUsuario = 0;
-    static String usuarioAutenticadoNombre = "usuario";
-    static String usuarioAutenticadoClave = "1234";
-    static String usuarioAutenticadoIdentificacion = "USR007";
+    // Creamos un usuario autenticado
+    private static Usuario usuarioAutenticado = crearUsuario();
 
     public static void main(String[] args) {
 
@@ -27,7 +27,7 @@ public class Aplicacion {
         char[] passwordArray = console.readPassword("Ingrese su contraseña: ");
         String usuarioClave = new String(passwordArray);
 
-        if (usuarioNombre.equals(usuarioAutenticadoNombre) && usuarioClave.equals(usuarioAutenticadoClave)) {
+        if (usuarioNombre.equals(usuarioAutenticado.getNombre()) && usuarioClave.equals(usuarioAutenticado.getClave())) {
             System.out.println(" ===============================");
             System.out.println("|  OPERACION COMPLETADA         |");
             System.out.println("|  Ha iniciado sesión con éxito |");
@@ -81,14 +81,29 @@ public class Aplicacion {
         }
     }
 
+    public static Usuario crearUsuario(){
+        Usuario usuario = new Usuario();
+        usuario.setNombre("usuario");
+        usuario.setClave("1234");
+        usuario.setIdentificacion("USR007");
+        usuario.setSaldo(0);
+        return usuario;
+    }
+
     public static void realizarTransferencia(Scanner scanner) {
         System.out.print("Ingrese el monto a transferir: ");
         double monto = scanner.nextDouble();
 
         if (monto > 0) {
-            if (monto <= saldoUsuario) {
-                saldoUsuario -= monto;
-                String saldoFormateado = FormateadorMoneda.formatear(saldoUsuario);
+            if (monto <= usuarioAutenticado.getSaldo()) {
+                double nuevoSaldoUsuario = usuarioAutenticado.getSaldo() - monto;
+                
+                //Colocar nuevo saldo al usuario autenticado
+                usuarioAutenticado.setSaldo(nuevoSaldoUsuario);
+
+                // Obtenemos el saldo del usuario autenticado
+                String saldoFormateado = FormateadorMoneda.formatear(usuarioAutenticado.getSaldo());
+
                 System.out.println("Transferencia realizada con éxito. Su nuevo saldo es: " + saldoFormateado);
             } else {
                 System.out.println("Saldo insuficiente para realizar la transferencia.");
@@ -102,9 +117,14 @@ public class Aplicacion {
         System.out.print("Ingrese el monto a depositar: ");
         double monto = scanner.nextDouble();
 
-        if (monto > 0) {
-            saldoUsuario += monto;
-            String saldoFormateado = FormateadorMoneda.formatear(saldoUsuario);
+        if (monto > 0) {            
+            double nuevoSaldoUsuario = usuarioAutenticado.getSaldo() + monto;
+
+            //Colocar nuevo saldo al usuario autenticado
+            usuarioAutenticado.setSaldo(nuevoSaldoUsuario);
+
+            // Obtenemos el saldo del usuario autenticado
+            String saldoFormateado = FormateadorMoneda.formatear(usuarioAutenticado.getSaldo());
             System.out.println("Depósito realizado con éxito. Su nuevo saldo es: " + saldoFormateado);
         } else {
             System.out.println("El monto debe ser mayor que 0.");
@@ -112,17 +132,17 @@ public class Aplicacion {
     }
 
     public static void mostrarSaldo() {
-        System.out.println("Su saldo actual es: " + FormateadorMoneda.formatear(saldoUsuario));
+        System.out.println("Su saldo actual es: " + FormateadorMoneda.formatear(usuarioAutenticado.getSaldo()));
     }
 
     public static void mostrarInformacionUsuario() {
-        String saldoFormateado = FormateadorMoneda.formatear(saldoUsuario);
+        String saldoFormateado = FormateadorMoneda.formatear(usuarioAutenticado.getSaldo());
 
         System.out.println("+-------------------------------+");
         System.out.println("| ** Información del Usuario ** |");
         System.out.println("+-------------------------------+");
-        System.out.println("* Nombre de usuario: " + usuarioAutenticadoNombre);
-        System.out.println("* ID de usuario: " + usuarioAutenticadoIdentificacion);
+        System.out.println("* Nombre de usuario: " + usuarioAutenticado.getNombre());
+        System.out.println("* ID de usuario: " + usuarioAutenticado.getIdentificacion());
         System.out.println("* Saldo actual: " + saldoFormateado);
         System.out.println("+-------------------------------+");
     }    
