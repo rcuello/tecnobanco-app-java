@@ -1,6 +1,8 @@
 package edu.uni.comfenalco.tecnobanco;
 
 import java.io.Console;
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Aplicacion {
@@ -78,6 +80,12 @@ public class Aplicacion {
     }
 
     public static void mostrarSaldo() {
-        System.out.println("Su saldo actual es: " + saldoUsuario);
+        System.out.println("Su saldo actual es: " + formatearMoneda(saldoUsuario));
+    }
+
+    // Método para formatear números como moneda
+    public static String formatearMoneda(double cantidad) {
+        NumberFormat formatoMoneda = NumberFormat.getCurrencyInstance(Locale.getDefault());
+        return formatoMoneda.format(cantidad);
     }
 }
