@@ -5,6 +5,8 @@ import java.util.Scanner;
 
 import edu.uni.comfenalco.tecnobanco.modelo.Usuario;// Importamos la clase Usuario
 import edu.uni.comfenalco.tecnobanco.repositorio.UsuarioRepositorio; // Importamos la clase UsuarioRepositorio
+import edu.uni.comfenalco.tecnobanco.servicios.DepositoServicio;// Importamos la clase DepositoServicio
+import edu.uni.comfenalco.tecnobanco.servicios.TransferenciaServicio;// Importamos la clase TransferenciaServicio
 import edu.uni.comfenalco.tecnobanco.util.FormateadorMoneda; // Importamos la clase FormateadorMoneda
 
 public class Aplicacion {
@@ -59,10 +61,16 @@ public class Aplicacion {
 
                 switch (opcion) {
                     case 1:
-                        realizarDeposito(scanner);
+                        System.out.print("Ingrese el monto a depositar: ");
+                        double montoDeposito = scanner.nextDouble();
+                        // Llamamos al servicio de depósitos para manejar la lógica específica.
+                        DepositoServicio.realizarDeposito(usuarioAutenticado, montoDeposito);
                         break;
                     case 2:
-                        realizarTransferencia(scanner);
+                        System.out.print("Ingrese el monto a transferir: ");
+                        double montoTransferencia = scanner.nextDouble();
+                        // Llamamos al servicio de transferencias para manejar la lógica específica.
+                        TransferenciaServicio.realizarTransferencia(usuarioAutenticado, montoTransferencia);
                         break;
                     case 3:
                         mostrarSaldo();
@@ -81,47 +89,6 @@ public class Aplicacion {
 
         } else {
             System.out.println("Credenciales invalidas!");
-        }
-    }
-
-    public static void realizarTransferencia(Scanner scanner) {
-        System.out.print("Ingrese el monto a transferir: ");
-        double monto = scanner.nextDouble();
-
-        if (monto > 0) {
-            if (monto <= usuarioAutenticado.getSaldo()) {
-                double nuevoSaldoUsuario = usuarioAutenticado.getSaldo() - monto;
-
-                // Colocar nuevo saldo al usuario autenticado
-                usuarioAutenticado.setSaldo(nuevoSaldoUsuario);
-
-                // Obtenemos el saldo del usuario autenticado
-                String saldoFormateado = FormateadorMoneda.formatear(usuarioAutenticado.getSaldo());
-
-                System.out.println("Transferencia realizada con éxito. Su nuevo saldo es: " + saldoFormateado);
-            } else {
-                System.out.println("Saldo insuficiente para realizar la transferencia.");
-            }
-        } else {
-            System.out.println("El monto debe ser mayor que 0.");
-        }
-    }
-
-    public static void realizarDeposito(Scanner scanner) {
-        System.out.print("Ingrese el monto a depositar: ");
-        double monto = scanner.nextDouble();
-
-        if (monto > 0) {
-            double nuevoSaldoUsuario = usuarioAutenticado.getSaldo() + monto;
-
-            // Colocar nuevo saldo al usuario autenticado
-            usuarioAutenticado.setSaldo(nuevoSaldoUsuario);
-
-            // Obtenemos el saldo del usuario autenticado
-            String saldoFormateado = FormateadorMoneda.formatear(usuarioAutenticado.getSaldo());
-            System.out.println("Depósito realizado con éxito. Su nuevo saldo es: " + saldoFormateado);
-        } else {
-            System.out.println("El monto debe ser mayor que 0.");
         }
     }
 
