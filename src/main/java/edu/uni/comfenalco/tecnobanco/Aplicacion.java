@@ -6,7 +6,7 @@ import java.util.Locale;
 import java.util.Scanner;
 
 public class Aplicacion {
-    static double saldoUsuario = 20000;
+    static double saldoUsuario = 0;
     static String usuarioAutenticadoNombre = "usuario";
     static String usuarioAutenticadoClave = "1234";
     static String usuarioAutenticadoIdentificacion = "USR007";
@@ -60,7 +60,7 @@ public class Aplicacion {
                         realizarDeposito(scanner);
                         break;
                     case 2:
-                        System.out.println("TODO: Realizar transferencia");
+                        realizarTransferencia(scanner);
                         break;
                     case 3:
                         mostrarSaldo();
@@ -79,6 +79,23 @@ public class Aplicacion {
 
         } else {
             System.out.println("Credenciales invalidas!");
+        }
+    }
+
+    public static void realizarTransferencia(Scanner scanner) {
+        System.out.print("Ingrese el monto a transferir: ");
+        double monto = scanner.nextDouble();
+
+        if (monto > 0) {
+            if (monto <= saldoUsuario) {
+                saldoUsuario -= monto;
+                String saldoFormateado = formatearMoneda(saldoUsuario);
+                System.out.println("Transferencia realizada con éxito. Su nuevo saldo es: " + saldoFormateado);
+            } else {
+                System.out.println("Saldo insuficiente para realizar la transferencia.");
+            }
+        } else {
+            System.out.println("El monto debe ser mayor que 0.");
         }
     }
 
