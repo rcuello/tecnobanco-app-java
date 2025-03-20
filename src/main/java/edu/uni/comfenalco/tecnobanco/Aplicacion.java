@@ -4,9 +4,9 @@ import java.io.Console;
 import java.util.Scanner;
 
 public class Aplicacion {
+    static double saldoUsuario = 20000;
 
-    public static void main(String[] args){
-
+    public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
         Console console = System.console();
@@ -19,7 +19,7 @@ public class Aplicacion {
         System.out.println("Ingrese el nombre de usuario:");
 
         String usuarioNombre = scanner.nextLine();
-        
+
         char[] passwordArray = console.readPassword("Ingrese su contraseña: ");
         String usuarioClave = new String(passwordArray);
 
@@ -30,7 +30,7 @@ public class Aplicacion {
             System.out.println(" ===============================");
 
             boolean salirDelPrograma = false;
-            
+
             while (!salirDelPrograma) {
 
                 System.out.println("+-------------------------------+");
@@ -51,16 +51,16 @@ public class Aplicacion {
                 scanner.nextLine();
 
                 switch (opcion) {
-                    case 1:                        
+                    case 1:
                         System.out.println("TODO: Realizar deposito");
                         break;
-                    case 2:                        
+                    case 2:
                         System.out.println("TODO: Realizar transferencia");
                         break;
-                    case 3:                        
-                        System.out.println("TODO: Mostrar saldo");
+                    case 3:
+                        mostrarSaldo();
                         break;
-                    case 4:                        
+                    case 4:
                         System.out.println("TODO: Mostrar informacion del usuario");
                         break;
                     case 5:
@@ -72,9 +72,12 @@ public class Aplicacion {
                 }
             }
 
-
         } else {
             System.out.println("Credenciales invalidas!");
         }
+    }
+
+    public static void mostrarSaldo() {
+        System.out.println("Su saldo actual es: " + saldoUsuario);
     }
 }
