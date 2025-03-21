@@ -7,6 +7,7 @@ public class Usuario {
     private String clave;
     private String identificacion;
     private double saldo;
+    private RolUsuario rol;
 
     // Métodos públicos para acceder y modificar los atributos privados (getters y setters)
     // Permiten obtener y cambiar el valor de un atributo de manera controlada
@@ -40,5 +41,13 @@ public class Usuario {
 
     public double getSaldo() {
         return saldo;
+    }
+
+    public RolUsuario getRol() {
+        return rol;
+    }
+
+    public void setRol(RolUsuario rol) {
+        this.rol = rol;
     }
 }
