@@ -31,7 +31,7 @@ public class UsuarioVista {
 
         while (!salirDelPrograma) {
             System.out.println("+-------------------------------+");
-            System.out.println("|        ** Menú Principal **   |");
+            System.out.println("|        ** Menú Cliente **     |");
             System.out.println("+-------------------------------+");
             System.out.println("| 1. Depositar                  |");
             System.out.println("| 2. Transferir                 |");

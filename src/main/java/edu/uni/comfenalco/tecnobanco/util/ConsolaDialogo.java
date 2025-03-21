@@ -20,6 +20,12 @@ public class ConsolaDialogo {
         System.out.println("//   Credenciales inválidas    //");
         System.out.println("/////////////////////////////////");
     }
+    public static void mostrarErrorRolDesconocido() {
+        System.out.println("///////////////////////////////////");
+        System.out.println("//   ERROR: Rol no reconocido     //");
+        System.out.println("//   Contacte al administrador    //");
+        System.out.println("///////////////////////////////////");
+    }
 
     public static void mostrarInicioSesionExitoso() {
         System.out.println(" ===============================");

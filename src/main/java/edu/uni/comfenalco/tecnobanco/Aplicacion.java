@@ -3,11 +3,13 @@ package edu.uni.comfenalco.tecnobanco;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+import edu.uni.comfenalco.tecnobanco.modelo.RolUsuario;
 import edu.uni.comfenalco.tecnobanco.modelo.Usuario;
 import edu.uni.comfenalco.tecnobanco.repositorio.UsuarioRepositorio;
 import edu.uni.comfenalco.tecnobanco.util.ConsolaDialogo;
 import edu.uni.comfenalco.tecnobanco.util.ConsolaUtil;
 import edu.uni.comfenalco.tecnobanco.vistas.AutorVista;
+import edu.uni.comfenalco.tecnobanco.vistas.UsuarioAsesorFinancieroVista;
 import edu.uni.comfenalco.tecnobanco.vistas.UsuarioVista;
 
 public class Aplicacion {
@@ -84,8 +86,25 @@ public class Aplicacion {
         if (usuarioAutenticado != null) {
             ConsolaDialogo.mostrarInicioSesionExitoso();
 
-            // Llamamos a la vista del menú para manejar la interacción con el usuario.
-            UsuarioVista.mostrarMenu(usuarioAutenticado);
+            RolUsuario rolUsuario = usuarioAutenticado.getRol();
+
+            switch (rolUsuario) {
+                case CLIENTE:
+                    // Llamamos a la vista del menú para manejar la interacción con el usuario
+                    // "Cliente".
+                    UsuarioVista.mostrarMenu(usuarioAutenticado);
+                    break;
+
+                case ASESOR_FINANCIERO:
+                    // Llamamos a la vista del menú para manejar la interacción con el usuario
+                    // "Asesor Financiero".
+                    UsuarioAsesorFinancieroVista.mostrarMenu(usuarioAutenticado);
+                    break;
+
+                default:
+                    ConsolaDialogo.mostrarErrorRolDesconocido();
+                    break;
+            }
 
         } else {
             ConsolaDialogo.mostrarCredencialesInvalidas();
