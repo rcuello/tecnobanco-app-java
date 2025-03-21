@@ -10,11 +10,15 @@ public class SesionUsuario {
     private static Usuario usuarioAutenticado;
 
     /**
-     * Establece el usuario autenticado.
+     * Guarda el usuario autenticado en memoria.
      * 
      * @param usuario El usuario que ha iniciado sesión.
+     * @throws IllegalArgumentException Si el usuario es nulo.
      */
-    public static void iniciarSesion(Usuario usuario) {
+    public static void guardarUsuarioAutenticado(Usuario usuario) {
+        if (usuario == null) {
+            throw new IllegalArgumentException("El usuario no puede ser nulo.");
+        }
         usuarioAutenticado = usuario;
     }
 
