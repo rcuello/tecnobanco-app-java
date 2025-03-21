@@ -28,7 +28,7 @@ public class Aplicacion {
             String usuarioNombre = solicitarNombreUsuario(scanner);
 
             // Solicitar y validar la contraseña del usuario
-            String usuarioClave = solicitarContrasenia();
+            String usuarioClave = solicitarContrasenia(scanner);
 
             usuarioAutenticado = UsuarioRepositorio.obtenerUsuarioAutenticado(usuarioNombre, usuarioClave);
 
@@ -70,16 +70,30 @@ public class Aplicacion {
         }
     }
 
+    
+
     /**
      * Solicita y valida la contraseña del usuario.
+     * Intenta utilizar Console para ocultar la entrada, pero si no está disponible
+     * utiliza Scanner como alternativa.
      * 
-     * @return La contraseña ingresada por el usuario.
+     * @param scanner Scanner alternativo si Console no está disponible
+     * @return La contraseña ingresada por el usuario
      */
-    private static String solicitarContrasenia() {
-        // Console para leer la contraseña de manera segura.
+    private static String solicitarContrasenia(Scanner scanner) {
+        // Intentamos obtener la consola del sistema
         Console console = System.console();
-        char[] passwordArray = console.readPassword("Ingrese su contraseña: ");
-        return new String(passwordArray);
+
+        if (console != null) {
+            // Si la consola está disponible, usamos readPassword para ocultar la entrada
+            char[] passwordArray = console.readPassword("Ingrese su contraseña: ");
+            return new String(passwordArray);
+        } else {
+            // Si la consola no está disponible (por ejemplo, en IDEs), usamos Scanner
+            System.out.println("Ingrese su contraseña: ");
+            System.out.println("(Nota: la contraseña será visible debido a limitaciones del entorno)");
+            return scanner.nextLine();
+        }
     }
 
     /**
@@ -92,7 +106,7 @@ public class Aplicacion {
         System.out.println("Ingrese el nombre de usuario:");
         String usuarioNombre = scanner.nextLine();
 
-        while (usuarioNombre.trim().isEmpty()) {
+        while (usuarioNombre == null || usuarioNombre.trim().isEmpty()) {
             System.out.println("El nombre de usuario es requerido. Inténtelo de nuevo:");
             usuarioNombre = scanner.nextLine();
         }
@@ -100,28 +114,28 @@ public class Aplicacion {
         return usuarioNombre;
     }
 
-    /*
-     * Al igual que un "conserje" que cierra las puertas y apaga las luces al final
-     * del día,
-     * este método prepara el programa para realizar tareas de limpieza y despedida
-     * antes de terminar.
-     * Sirve para limpiar recursos importantes (como conexiones a bases de datos o
-     * archivos abiertos)
-     * y para mostrar un mensaje de despedida.
-     *
-     * La tarea de limpieza se ejecuta una sola vez, incluso si el programa recibe
-     * múltiples señales de cierre.
-     *
-     * La acción se ejecuta en diversas situaciones de cierre, incluyendo:
-     * - Cierre normal o forzado (Ctrl+C).
-     * - Apagado del sistema.
-     * - Errores graves.
+    /**
+     * Registra una tarea que se ejecutará cuando la aplicación se cierre.
+     * 
+     * Esto es útil para:
+     * 1. Liberar recursos (conexiones a bases de datos, archivos, etc.)
+     * 2. Guardar datos pendientes
+     * 3. Mostrar un mensaje de despedida
+     * 
+     * La tarea se ejecutará en diferentes situaciones:
+     * - Cuando el programa termina normalmente
+     * - Cuando se interrumpe con Ctrl+C
+     * - Cuando el sistema se apaga
+     * - En caso de errores graves
      */
     private static void prepararCierreDelPrograma() {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             System.out.println("\nCerrando TecnoBanco...");
-            // Aquí puedes agregar lógica para cerrar conexiones, guardar datos, etc.
-            System.out.println("¡Hasta pronto!");
+            // Aquí podríamos agregar código para:
+            // - Cerrar conexiones a bases de datos
+            // - Guardar información en archivos
+            // - Liberar otros recursos
+            System.out.println("¡Gracias por usar TecnoBanco. Hasta pronto!");
         }));
     }
 }
