@@ -1,6 +1,7 @@
 package edu.uni.comfenalco.tecnobanco;
 
 import java.io.Console;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import edu.uni.comfenalco.tecnobanco.modelo.Usuario;// Importamos la clase Usuario
@@ -16,7 +17,6 @@ public class Aplicacion {
         prepararCierreDelPrograma();
 
         Scanner scanner = new Scanner(System.in);
-        Console console = System.console();
 
         try {
             System.out.println("+-------------------------------+");
@@ -24,17 +24,11 @@ public class Aplicacion {
             System.out.println("|        TecnoBanco **          |");
             System.out.println("+-------------------------------+");
 
-            System.out.println("Ingrese el nombre de usuario:");
+            // Solicitar y validar el nombre de usuario
+            String usuarioNombre = solicitarNombreUsuario(scanner);
 
-            String usuarioNombre = scanner.nextLine();
-
-            while (usuarioNombre.trim().isEmpty()) {
-                System.out.println("El nombre de usuario es requerido. Inténtelo de nuevo:");
-                usuarioNombre = scanner.nextLine();
-            }
-
-            char[] passwordArray = console.readPassword("Ingrese su contraseña: ");
-            String usuarioClave = new String(passwordArray);
+            // Solicitar y validar la contraseña del usuario
+            String usuarioClave = solicitarContrasenia();
 
             usuarioAutenticado = UsuarioRepositorio.obtenerUsuarioAutenticado(usuarioNombre, usuarioClave);
 
@@ -50,11 +44,60 @@ public class Aplicacion {
             } else {
                 System.out.println("Credenciales invalidas!");
             }
+        } catch (NoSuchElementException e) {
+            // Este bloque captura la excepción NoSuchElementException, que ocurre cuando el
+            // usuario
+            // presiona Ctrl+C mientras el programa está esperando una entrada (por ejemplo,
+            // con scanner.nextLine()).
+            //
+            // ¿Por qué ocurre esto?
+            // - Al presionar Ctrl+C, el sistema operativo interrumpe la ejecución del
+            // programa.
+            // - Si esto sucede mientras el Scanner está esperando una entrada, el Scanner
+            // no puede
+            // encontrar la línea solicitada y lanza una NoSuchElementException.
+            //
+            // ¿Cómo lo manejamos?
+            // - Mostramos un mensaje amigable al usuario indicando que la operación fue
+            // cancelada.
+            // - Esto evita que el programa termine abruptamente con un mensaje de error
+            // confuso.
+            System.out.println("\nOperación cancelada por el usuario.");
         } catch (Exception e) {
             System.out.println("Ocurrió un error inesperado: " + e.getMessage());
         } finally {
             scanner.close();
         }
+    }
+
+    /**
+     * Solicita y valida la contraseña del usuario.
+     * 
+     * @return La contraseña ingresada por el usuario.
+     */
+    private static String solicitarContrasenia() {
+        // Console para leer la contraseña de manera segura.
+        Console console = System.console();
+        char[] passwordArray = console.readPassword("Ingrese su contraseña: ");
+        return new String(passwordArray);
+    }
+
+    /**
+     * Solicita y valida el nombre de usuario.
+     * 
+     * @param scanner Scanner para leer la entrada del usuario.
+     * @return El nombre de usuario válido.
+     */
+    private static String solicitarNombreUsuario(Scanner scanner) {
+        System.out.println("Ingrese el nombre de usuario:");
+        String usuarioNombre = scanner.nextLine();
+
+        while (usuarioNombre.trim().isEmpty()) {
+            System.out.println("El nombre de usuario es requerido. Inténtelo de nuevo:");
+            usuarioNombre = scanner.nextLine();
+        }
+
+        return usuarioNombre;
     }
 
     /*
