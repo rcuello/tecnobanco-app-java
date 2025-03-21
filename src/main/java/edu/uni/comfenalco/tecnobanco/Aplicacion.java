@@ -4,8 +4,8 @@ import java.io.Console;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-import edu.uni.comfenalco.tecnobanco.modelo.Usuario;// Importamos la clase Usuario
-import edu.uni.comfenalco.tecnobanco.repositorio.UsuarioRepositorio; // Importamos la clase UsuarioRepositorio
+import edu.uni.comfenalco.tecnobanco.modelo.Usuario;
+import edu.uni.comfenalco.tecnobanco.repositorio.UsuarioRepositorio;
 import edu.uni.comfenalco.tecnobanco.vistas.UsuarioVista;
 
 public class Aplicacion {
@@ -16,9 +16,9 @@ public class Aplicacion {
 
         prepararCierreDelPrograma();
 
-        Scanner scanner = new Scanner(System.in);
-
-        try {
+        // Utilizamos try-with-resources para asegurar que el Scanner se cierre
+        // automáticamente
+        try (Scanner scanner = new Scanner(System.in)) {
             System.out.println("+-------------------------------+");
             System.out.println("|       ** Bienvenido a         |");
             System.out.println("|        TecnoBanco **          |");
@@ -41,36 +41,35 @@ public class Aplicacion {
                 // Llamamos a la vista del menú para manejar la interacción con el usuario.
                 UsuarioVista.mostrarMenu(usuarioAutenticado);
 
-            } else {
-                System.out.println("Credenciales invalidas!");
+            } else {                
+                System.out.println("/////////////////////////////////");
+                System.out.println("//   ERROR: ACCESO DENEGADO    //");
+                System.out.println("//   Credenciales inválidas    //");
+                System.out.println("/////////////////////////////////");
+                esperarTecla(scanner);
             }
         } catch (NoSuchElementException e) {
-            // Este bloque captura la excepción NoSuchElementException, que ocurre cuando el
-            // usuario
-            // presiona Ctrl+C mientras el programa está esperando una entrada (por ejemplo,
-            // con scanner.nextLine()).
-            //
-            // ¿Por qué ocurre esto?
-            // - Al presionar Ctrl+C, el sistema operativo interrumpe la ejecución del
-            // programa.
-            // - Si esto sucede mientras el Scanner está esperando una entrada, el Scanner
-            // no puede
-            // encontrar la línea solicitada y lanza una NoSuchElementException.
-            //
-            // ¿Cómo lo manejamos?
-            // - Mostramos un mensaje amigable al usuario indicando que la operación fue
-            // cancelada.
-            // - Esto evita que el programa termine abruptamente con un mensaje de error
-            // confuso.
+            // Esta excepción ocurre cuando se interrumpe la entrada (Ctrl+C)
             System.out.println("\nOperación cancelada por el usuario.");
         } catch (Exception e) {
+            // Capturamos cualquier otra excepción no esperada
             System.out.println("Ocurrió un error inesperado: " + e.getMessage());
-        } finally {
-            scanner.close();
+
+            // Útil durante el desarrollo y depuración
+            e.printStackTrace();
         }
     }
 
-    
+    /**
+     * Pausa la ejecución hasta que el usuario presione Enter.
+     * Útil para mostrar mensajes antes de continuar.
+     * 
+     * @param scanner Scanner para leer la entrada del usuario
+     */
+    private static void esperarTecla(Scanner scanner) {
+        System.out.println("\nPresione Enter para continuar...");
+        scanner.nextLine();
+    }
 
     /**
      * Solicita y valida la contraseña del usuario.
