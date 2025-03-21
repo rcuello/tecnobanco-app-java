@@ -39,7 +39,7 @@ public class UsuarioVista {
             System.out.println("| 2. Transferir                 |");
             System.out.println("| 3. Ver saldo                  |");
             System.out.println("| 4. Información del usuario    |");
-            System.out.println("| 5. Salir                      |");
+            System.out.println("| 5. Cerrar sesión              |");
             System.out.println("+-------------------------------+");
 
             System.out.print("Seleccione una opción: ");

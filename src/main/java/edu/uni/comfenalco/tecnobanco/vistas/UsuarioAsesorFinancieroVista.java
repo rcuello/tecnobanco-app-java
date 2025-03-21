@@ -14,14 +14,14 @@ public class UsuarioAsesorFinancieroVista {
         boolean salirDelPrograma = false;
 
         while (!salirDelPrograma) {
-            System.out.println("+-------------------------------+");
+            System.out.println("+--------------------------------+");
             System.out.println("|    ** Menú Asesor Financiero **|");
             System.out.println("+-------------------------------+");
-            System.out.println("| 1. Ver clientes               |");
+            System.out.println("| 1. Ver clientes                |");
             System.out.println("| 2. Generar reportes            |");
-            System.out.println("| 3. Ver información del usuario|");
-            System.out.println("| 4. Salir                      |");
-            System.out.println("+-------------------------------+");
+            System.out.println("| 3. Ver información del usuario |");
+            System.out.println("| 4. Cerrar sesión               |");
+            System.out.println("+--------------------------------+");
 
             System.out.print("Seleccione una opción: ");
             int opcion = scanner.nextInt();
@@ -39,7 +39,7 @@ public class UsuarioAsesorFinancieroVista {
                     // Lógica para generar reportes
                     break;
                 case 3:                    
-                    System.out.println("Mostrar informacion del usuario...");
+                    mostrarInformacionUsuario(usuario);
                     break;
                 case 4:
                     SesionUsuario.cerrarSesion();
@@ -49,5 +49,14 @@ public class UsuarioAsesorFinancieroVista {
                     System.out.println("Opción inválida. Por favor, seleccione una opción del 1 al 4.");
             }
         }
+    }
+
+    private static void mostrarInformacionUsuario(Usuario usuario) {        
+        System.out.println("+-------------------------------+");
+        System.out.println("| ** Información del Asesor  ** |");
+        System.out.println("+-------------------------------+");
+        System.out.println("* Nombre de usuario: " + usuario.getNombre());
+        System.out.println("* ID de usuario: " + usuario.getIdentificacion());
+        System.out.println("+-------------------------------+");
     }
 }
