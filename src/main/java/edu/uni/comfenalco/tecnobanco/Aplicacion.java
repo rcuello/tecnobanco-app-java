@@ -28,6 +28,11 @@ public class Aplicacion {
 
             String usuarioNombre = scanner.nextLine();
 
+            while (usuarioNombre.trim().isEmpty()) {
+                System.out.println("El nombre de usuario es requerido. Inténtelo de nuevo:");
+                usuarioNombre = scanner.nextLine();
+            }
+
             char[] passwordArray = console.readPassword("Ingrese su contraseña: ");
             String usuarioClave = new String(passwordArray);
 
