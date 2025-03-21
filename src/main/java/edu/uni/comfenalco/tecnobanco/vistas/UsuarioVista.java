@@ -64,7 +64,7 @@ public class UsuarioVista {
                     mostrarInformacionUsuario(usuario);
                     break;
                 case 5:
-                    System.out.println("Saliendo del sistema...");
+                    System.out.println("Cerrando sesión...");
                     salirDelPrograma = true;
                     break;
                 default:

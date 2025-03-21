@@ -39,7 +39,7 @@ public class UsuarioAsesorFinancieroVista {
                     System.out.println("Mostrar informacion del usuario...");
                     break;
                 case 4:
-                    System.out.println("Saliendo del sistema...");
+                    System.out.println("Cerrando sesión...");
                     salirDelPrograma = true;
                     break;
                 default:
