@@ -1,7 +1,9 @@
 package edu.uni.comfenalco.tecnobanco.vistas;
 
+import java.util.List;
 import java.util.Scanner;
 
+import edu.uni.comfenalco.tecnobanco.modelo.CuentaAhorro;
 import edu.uni.comfenalco.tecnobanco.modelo.Usuario;
 import edu.uni.comfenalco.tecnobanco.seguridad.SesionUsuario;
 import edu.uni.comfenalco.tecnobanco.servicios.DepositoServicio;
@@ -9,15 +11,19 @@ import edu.uni.comfenalco.tecnobanco.servicios.TransferenciaServicio;
 import edu.uni.comfenalco.tecnobanco.util.FormateadorMoneda;
 
 /**
- * Clase que maneja la interfaz de usuario (menú) de la aplicación. 
- * Esta clase tiene la responsabilidad de mostrar todo lo relacionado al Usuario del sistema.
+ * Clase que maneja la interfaz de usuario (menú) de la aplicación.
+ * Esta clase tiene la responsabilidad de mostrar todo lo relacionado al Usuario
+ * del sistema.
  * 
  * ¿Por qué usar una clase de vista?
- * 1. **Separación de responsabilidades**: La lógica de la interfaz de usuario se encapsula en esta clase,
- *    lo que hace que el código sea más organizado y fácil de mantener.
- * 2. **Facilita cambios en la interfaz**: Si en el futuro necesitas cambiar la forma en que se muestra el menú,
- *    solo necesitas modificar esta clase.
- * 3. **Claridad**: El código relacionado con la presentación está separado de la lógica de negocio y la lógica de servicios.
+ * 1. **Separación de responsabilidades**: La lógica de la interfaz de usuario
+ * se encapsula en esta clase,
+ * lo que hace que el código sea más organizado y fácil de mantener.
+ * 2. **Facilita cambios en la interfaz**: Si en el futuro necesitas cambiar la
+ * forma en que se muestra el menú,
+ * solo necesitas modificar esta clase.
+ * 3. **Claridad**: El código relacionado con la presentación está separado de
+ * la lógica de negocio y la lógica de servicios.
  */
 public class UsuarioVista {
     private static Scanner scanner = new Scanner(System.in);
@@ -65,7 +71,7 @@ public class UsuarioVista {
                 case 4:
                     mostrarInformacionUsuario(usuario);
                     break;
-                case 5:                    
+                case 5:
                     SesionUsuario.cerrarSesion();
                     salirDelPrograma = true;
                     break;
@@ -82,6 +88,51 @@ public class UsuarioVista {
      */
     private static void mostrarSaldo(Usuario usuario) {
         System.out.println("Su saldo actual es: " + FormateadorMoneda.formatear(usuario.getSaldo()));
+        List<CuentaAhorro> cuentas = usuario.getCuentas();
+
+        if (cuentas.isEmpty()) {
+            System.out.println("No tiene cuentas de ahorro registradas.");
+            return;
+        }
+
+        System.out.println("+-------------------------------+");
+        System.out.println("|       ** Cuentas de Ahorro **  |");
+        System.out.println("+-------------------------------+");
+        System.out.println("| Número de Cuenta | Saldo       |");
+        System.out.println("+-------------------------------+");
+
+        for (CuentaAhorro cuenta : cuentas) {
+            String numeroCuenta = cuenta.getNumeroCuenta();
+            String saldoFormateado = FormateadorMoneda.formatear(cuenta.getSaldo());
+            // Esta instruccion no se adapta al formato de la tabla
+            // System.out.println("| " + numeroCuenta + " | " + saldoFormateado + " |");
+
+            /*
+             * System.out.printf es una forma de imprimir texto formateado.
+             * 
+             * El formato "| %-16s | %-11s |\n" se compone de:
+             * - "|": Un carácter literal que se imprime tal cual.
+             * - "%-16s": Especificador de formato para el número de cuenta.
+             * - "%s": Indica que se imprimirá una cadena (String).
+             * - "-16": Ajusta la cadena a 16 caracteres de ancho, alineada a la izquierda.
+             * Si la cadena es más corta, se rellena con espacios en blanco.
+             * - "|": Otro carácter literal.
+             * - "%-11s": Especificador de formato para el saldo formateado.
+             * - "%s": Indica que se imprimirá una cadena (String).
+             * - "-11": Ajusta la cadena a 11 caracteres de ancho, alineada a la izquierda.
+             * - "|": Otro carácter literal.
+             * - "\n": Salto de línea al final.
+             * 
+             * Los argumentos "numeroCuenta" y "saldoFormateado" son los valores que se
+             * insertarán
+             * en los especificadores de formato (%s).
+             */
+            System.out.printf("| %-16s | %-11s |\n", numeroCuenta, saldoFormateado);
+        }
+        System.out.println("+-------------------------------+");
+
+        String saldoTotalFormateado = FormateadorMoneda.formatear(usuario.getSaldo());
+        System.out.println("Saldo total: " + saldoTotalFormateado);
     }
 
     /**
