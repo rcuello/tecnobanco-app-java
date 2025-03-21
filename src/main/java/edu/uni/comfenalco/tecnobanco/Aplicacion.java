@@ -24,30 +24,8 @@ public class Aplicacion {
             System.out.println("|        TecnoBanco **          |");
             System.out.println("+-------------------------------+");
 
-            // Solicitar y validar el nombre de usuario
-            String usuarioNombre = solicitarNombreUsuario(scanner);
+            iniciarSesion(scanner);
 
-            // Solicitar y validar la contraseña del usuario
-            String usuarioClave = solicitarContrasenia(scanner);
-
-            usuarioAutenticado = UsuarioRepositorio.obtenerUsuarioAutenticado(usuarioNombre, usuarioClave);
-
-            if (usuarioAutenticado != null) {
-                System.out.println(" ===============================");
-                System.out.println("|  OPERACION COMPLETADA         |");
-                System.out.println("|  Ha iniciado sesión con éxito |");
-                System.out.println(" ===============================");
-
-                // Llamamos a la vista del menú para manejar la interacción con el usuario.
-                UsuarioVista.mostrarMenu(usuarioAutenticado);
-
-            } else {                
-                System.out.println("/////////////////////////////////");
-                System.out.println("//   ERROR: ACCESO DENEGADO    //");
-                System.out.println("//   Credenciales inválidas    //");
-                System.out.println("/////////////////////////////////");
-                esperarTecla(scanner);
-            }
         } catch (NoSuchElementException e) {
             // Esta excepción ocurre cuando se interrumpe la entrada (Ctrl+C)
             System.out.println("\nOperación cancelada por el usuario.");
@@ -57,6 +35,40 @@ public class Aplicacion {
 
             // Útil durante el desarrollo y depuración
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Gestiona el flujo de inicio de sesión.
+     * Solicita credenciales y muestra el menú de usuario si la autenticación es
+     * exitosa.
+     * 
+     * @param scanner Scanner para leer la entrada del usuario
+     */
+    private static void iniciarSesion(Scanner scanner) {
+        // Solicitar y validar el nombre de usuario
+        String usuarioNombre = solicitarNombreUsuario(scanner);
+
+        // Solicitar y validar la contraseña del usuario
+        String usuarioClave = solicitarContrasenia(scanner);
+
+        usuarioAutenticado = UsuarioRepositorio.obtenerUsuarioAutenticado(usuarioNombre, usuarioClave);
+
+        if (usuarioAutenticado != null) {
+            System.out.println(" ===============================");
+            System.out.println("|  OPERACION COMPLETADA         |");
+            System.out.println("|  Ha iniciado sesión con éxito |");
+            System.out.println(" ===============================");
+
+            // Llamamos a la vista del menú para manejar la interacción con el usuario.
+            UsuarioVista.mostrarMenu(usuarioAutenticado);
+
+        } else {
+            System.out.println("/////////////////////////////////");
+            System.out.println("//   ERROR: ACCESO DENEGADO    //");
+            System.out.println("//   Credenciales inválidas    //");
+            System.out.println("/////////////////////////////////");
+            esperarTecla(scanner);
         }
     }
 
