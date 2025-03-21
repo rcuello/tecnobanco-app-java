@@ -7,6 +7,7 @@ import edu.uni.comfenalco.tecnobanco.modelo.Usuario;
 import edu.uni.comfenalco.tecnobanco.repositorio.UsuarioRepositorio;
 import edu.uni.comfenalco.tecnobanco.util.ConsolaDialogo;
 import edu.uni.comfenalco.tecnobanco.util.ConsolaUtil;
+import edu.uni.comfenalco.tecnobanco.vistas.AutorVista;
 import edu.uni.comfenalco.tecnobanco.vistas.UsuarioVista;
 
 public class Aplicacion {
@@ -20,9 +21,37 @@ public class Aplicacion {
         // Utilizamos try-with-resources para asegurar que el Scanner se cierre
         // automáticamente
         try (Scanner scanner = new Scanner(System.in)) {
-            ConsolaDialogo.mostrarBienvenida();
+            boolean ejecutar = true;
 
-            iniciarSesion(scanner);
+            while (ejecutar) {
+                ConsolaDialogo.mostrarBienvenida();
+                System.out.print("Seleccione una opción: ");
+                String opcion = scanner.nextLine();
+
+                switch (opcion) {
+                    case "1":
+                        // Flujo de inicio de sesión
+                        iniciarSesion(scanner);
+                        break;
+                    case "2":
+                        // Flujo para ver información de los autores
+                        verAutores(scanner);
+                        break;
+                    case "3":
+                        System.out.println("Gracias por usar TecnoBanco.");
+                        ejecutar = false;
+                        break;
+                    default:
+                        System.out.println("Opción no válida. Por favor, intente de nuevo.");
+                        // Pequeña pausa para que el usuario pueda leer el mensaje
+                        ConsolaUtil.esperarTecla(scanner);
+                }
+                // Limpiamos la pantalla para la siguiente iteración (solo si seguimos
+                // ejecutando)
+                if (ejecutar) {
+                    ConsolaUtil.limpiarPantalla();
+                }
+            } // fin ciclo while
 
         } catch (NoSuchElementException e) {
             // Esta excepción ocurre cuando se interrumpe la entrada (Ctrl+C)
@@ -63,7 +92,20 @@ public class Aplicacion {
             ConsolaUtil.esperarTecla(scanner);
         }
     }
-    
+
+    /**
+     * Muestra información sobre los autores del sistema.
+     * 
+     * @param scanner Scanner para leer la entrada del usuario
+     */
+    private static void verAutores(Scanner scanner) {
+        // Llamamos a la vista de autores
+        AutorVista.mostrarInformacion();
+
+        // Esperamos a que el usuario presione una tecla para volver al menú principal
+        System.out.println("\nPresione Enter para volver al menú principal...");
+        scanner.nextLine();
+    }
 
     /**
      * Registra una tarea que se ejecutará cuando la aplicación se cierre.

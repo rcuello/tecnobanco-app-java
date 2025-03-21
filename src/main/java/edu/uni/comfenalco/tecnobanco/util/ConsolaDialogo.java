@@ -8,6 +8,10 @@ public class ConsolaDialogo {
         System.out.println("|       ** Bienvenido a         |");
         System.out.println("|        TecnoBanco **          |");
         System.out.println("+-------------------------------+");
+        System.out.println("| 1. Iniciar sesión             |");
+        System.out.println("| 2. Ver autores                |");
+        System.out.println("| 3. Salir                      |");
+        System.out.println("+-------------------------------+");
     }
 
     public static void mostrarCredencialesInvalidas() {
@@ -24,7 +28,7 @@ public class ConsolaDialogo {
         System.out.println(" ===============================");
     }
 
-    public static boolean solicitarConfirmacion(Scanner scanner,String mensaje) {
+    public static boolean solicitarConfirmacion(Scanner scanner, String mensaje) {
         System.out.println("=== Confirmación ===");
         System.out.print(mensaje + " (s/n): ");
         String respuesta = scanner.nextLine();
