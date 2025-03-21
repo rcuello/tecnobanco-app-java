@@ -1,20 +1,24 @@
 package edu.uni.comfenalco.tecnobanco.repositorio;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.uni.comfenalco.tecnobanco.modelo.CuentaAhorro;
 import edu.uni.comfenalco.tecnobanco.modelo.RolUsuario;
 import edu.uni.comfenalco.tecnobanco.modelo.Usuario;
 
 public class UsuarioRepositorio {
-    private static Usuario[] usuarios;
+    private static Usuario[] LISTA_USUARIOS;
 
     // Inicializamos la lista de usuarios
-    static{
-        usuarios = obtenerListaUsuarios();
+    static {
+        LISTA_USUARIOS = obtenerListaUsuarios();
     }
+
     // Método para buscar el usuario a traves de su nombre y clave
-    public static Usuario obtenerUsuarioAutenticado(String nombreUsuario, String claveUsuario) {        
+    public static Usuario obtenerUsuarioAutenticado(String nombreUsuario, String claveUsuario) {
         // recorremos la lista de usuarios (usamos foreach)
-        for (Usuario usuario : usuarios) {
+        for (Usuario usuario : LISTA_USUARIOS) {
             // Verificar si el usuario y la clave coinciden
             if (usuario.getNombre().equals(nombreUsuario) && usuario.getClave().equals(claveUsuario)) {
                 // Si el usuario y la clave coinciden, retornamos el usuario
@@ -55,9 +59,20 @@ public class UsuarioRepositorio {
 
         return usuario;
     }
-    
-    public static Usuario[] getUsuarios() {
-        return usuarios;
+
+    public static List<Usuario> obtenerUsuariosClientes() {
+        List<Usuario> usuariosClientes = new ArrayList<Usuario>();
+        for (Usuario usuario : LISTA_USUARIOS) {
+            if(usuario.getRol() == RolUsuario.CLIENTE){
+                usuariosClientes.add(usuario);
+            }
+        }
+
+        return usuariosClientes;
     }
-    
+
+    public static Usuario[] getLISTA_USUARIOS() {
+        return LISTA_USUARIOS;
+    }
+
 }

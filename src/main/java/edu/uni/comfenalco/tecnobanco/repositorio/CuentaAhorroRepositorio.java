@@ -5,8 +5,8 @@ import edu.uni.comfenalco.tecnobanco.modelo.Usuario;
 
 public class CuentaAhorroRepositorio {
     public static CuentaAhorro buscarCuentaAhorro(String numeroCuenta){
-        Usuario[] usuarios = UsuarioRepositorio.getUsuarios();
-        
+        Usuario[] usuarios = UsuarioRepositorio.getLISTA_USUARIOS();
+
         for(Usuario usuario : usuarios){
             for(CuentaAhorro cuenta : usuario.getCuentas()){
                 if(cuenta.getNumeroCuenta().equals(numeroCuenta)){
