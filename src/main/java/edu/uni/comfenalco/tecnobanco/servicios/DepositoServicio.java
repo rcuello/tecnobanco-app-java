@@ -1,7 +1,6 @@
 package edu.uni.comfenalco.tecnobanco.servicios;
 
 import edu.uni.comfenalco.tecnobanco.modelo.CuentaAhorro;
-import edu.uni.comfenalco.tecnobanco.modelo.Usuario;
 import edu.uni.comfenalco.tecnobanco.util.FormateadorMoneda;
 
 /**
