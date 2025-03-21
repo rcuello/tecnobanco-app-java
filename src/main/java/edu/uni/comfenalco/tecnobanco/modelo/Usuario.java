@@ -73,4 +73,14 @@ public class Usuario {
     public List<CuentaAhorro> getCuentas() {
         return cuentas;
     }
+
+    public CuentaAhorro buscarCuentaAhorro(String numeroCuenta) {
+        for (CuentaAhorro cuenta : cuentas) {
+            if (cuenta.getNumeroCuenta().equals(numeroCuenta)) {
+                return cuenta;
+            }
+        }
+        return null;
+    }
+    
 }

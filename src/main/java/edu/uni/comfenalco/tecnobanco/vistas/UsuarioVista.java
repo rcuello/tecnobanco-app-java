@@ -5,9 +5,11 @@ import java.util.Scanner;
 
 import edu.uni.comfenalco.tecnobanco.modelo.CuentaAhorro;
 import edu.uni.comfenalco.tecnobanco.modelo.Usuario;
+import edu.uni.comfenalco.tecnobanco.repositorio.CuentaAhorroRepositorio;
 import edu.uni.comfenalco.tecnobanco.seguridad.SesionUsuario;
 import edu.uni.comfenalco.tecnobanco.servicios.DepositoServicio;
 import edu.uni.comfenalco.tecnobanco.servicios.TransferenciaServicio;
+import edu.uni.comfenalco.tecnobanco.util.ConsolaUtil;
 import edu.uni.comfenalco.tecnobanco.util.FormateadorMoneda;
 
 /**
@@ -56,14 +58,10 @@ public class UsuarioVista {
 
             switch (opcion) {
                 case 1:
-                    System.out.print("Ingrese el monto a depositar: ");
-                    double montoDeposito = scanner.nextDouble();
-                    DepositoServicio.realizarDeposito(usuario, montoDeposito);
+                    realizarDeposito(usuario);
                     break;
                 case 2:
-                    System.out.print("Ingrese el monto a transferir: ");
-                    double montoTransferencia = scanner.nextDouble();
-                    TransferenciaServicio.realizarTransferencia(usuario, montoTransferencia);
+                    realizarTransferencia(usuario);
                     break;
                 case 3:
                     mostrarSaldo(usuario);
@@ -104,7 +102,7 @@ public class UsuarioVista {
         for (CuentaAhorro cuenta : cuentas) {
             String numeroCuenta = cuenta.getNumeroCuenta();
             String saldoFormateado = FormateadorMoneda.formatear(cuenta.getSaldo());
-            // Esta instruccion no se adapta al formato de la tabla
+            // Esta instruccion no se adapta
             // System.out.println("| " + numeroCuenta + " | " + saldoFormateado + " |");
 
             /*
@@ -151,4 +149,71 @@ public class UsuarioVista {
         System.out.println("* Saldo actual: " + saldoFormateado);
         System.out.println("+-------------------------------+");
     }
+
+    private static void realizarDeposito(Usuario usuario) {
+        List<CuentaAhorro> cuentas = usuario.getCuentas();
+
+        if (cuentas.isEmpty()) {
+            System.out.println("Necesita al menos una cuenta de ahorro para realizar un deposito.");
+            return;
+        }
+        // Solicitar la cuenta de origen
+        System.out.println("Seleccione su número de cuenta: ");
+        String numeroCuentaOrigen = scanner.nextLine();
+
+        CuentaAhorro cuentaOrigen = usuario.buscarCuentaAhorro(numeroCuentaOrigen);
+
+        if (cuentaOrigen == null) {
+            System.out.println("Número de cuenta de ahorro invalido.");
+            return;
+        }
+                
+        double montoDeposito = ConsolaUtil.solicitarMontoADepositar(scanner);
+
+        DepositoServicio.realizarDeposito(cuentaOrigen, montoDeposito);
+    }
+
+    private static void realizarTransferencia(Usuario usuario) {
+        List<CuentaAhorro> cuentas = usuario.getCuentas();
+
+        if (cuentas.size() == 0) {
+            System.out.println("Necesita al menos una cuenta de ahorro para realizar una transferencia.");
+            return;
+        }
+
+        // Solicitar la cuenta de origen
+        System.out.println("Seleccione el número de la cuenta de origen: ");
+        String numeroCuentaOrigen = scanner.nextLine();
+
+        // Solicitar la cuenta de destino
+        System.out.println("Seleccione el número de la cuenta de destino: ");
+        String numeroCuentaDestino = scanner.nextLine();
+
+        if (numeroCuentaOrigen == numeroCuentaDestino) {
+            System.out.println("No puede transferir a la misma cuenta.");
+            return;
+        }
+
+        // Solicitar el monto a transferir
+        System.out.print("Ingrese el monto a transferir: ");
+        double monto = scanner.nextDouble();
+
+        // Realizar la transferencia
+        CuentaAhorro cuentaOrigen = usuario.buscarCuentaAhorro(numeroCuentaOrigen);
+
+        if (cuentaOrigen == null) {
+            System.out.println("Número de cuenta de ahorro origen invalido.");
+            return;
+        }
+
+        CuentaAhorro cuentaDestino = CuentaAhorroRepositorio.buscarCuentaAhorro(numeroCuentaDestino);
+
+        if (cuentaDestino == null) {
+            System.out.println("Número de cuenta de ahorro destino no existe.");
+            return;
+        }
+
+        TransferenciaServicio.realizarTransferencia(cuentaOrigen, cuentaDestino, monto);
+    }
+
 }

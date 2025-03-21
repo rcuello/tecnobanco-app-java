@@ -1,6 +1,7 @@
 package edu.uni.comfenalco.tecnobanco.util;
 
 import java.io.Console;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -84,5 +85,26 @@ public class ConsolaUtil {
                 System.out.println();
             }
         }
+    }
+
+    public static double solicitarMontoADepositar(Scanner scanner) {
+        double montoDeposito = -1; // Valor inicial inválido
+
+        while (montoDeposito < 0) {
+            System.out.print("Ingrese el monto a depositar: ");
+
+            try {
+                montoDeposito = scanner.nextDouble();
+
+                if (montoDeposito < 0) {
+                    System.out.println("El monto no puede ser negativo. Inténtelo de nuevo.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida. Por favor, ingrese un número válido.");
+                scanner.next(); // Limpiar el buffer del scanner
+            }
+        }
+
+        return montoDeposito;
     }
 }

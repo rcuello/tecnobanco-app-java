@@ -1,5 +1,6 @@
 package edu.uni.comfenalco.tecnobanco.servicios;
 
+import edu.uni.comfenalco.tecnobanco.modelo.CuentaAhorro;
 import edu.uni.comfenalco.tecnobanco.modelo.Usuario;
 import edu.uni.comfenalco.tecnobanco.util.FormateadorMoneda;
 
@@ -18,14 +19,12 @@ public class DepositoServicio {
     /**
      * Realiza un depósito en la cuenta del usuario.
      * 
-     * @param usuario El usuario al que se le realizará el depósito.
-     * @param monto   El monto a depositar. Debe ser mayor que 0.
      */
-    public static void realizarDeposito(Usuario usuario, double monto) {
+    public static void realizarDeposito(CuentaAhorro cuentaOrigen, double monto){
         if (monto > 0) {
-            double nuevoSaldo = usuario.getSaldo() + monto;
-            usuario.setSaldo(nuevoSaldo);
-            String saldoFormateado = FormateadorMoneda.formatear(usuario.getSaldo());
+            double nuevoSaldo = cuentaOrigen.getSaldo() + monto;
+            cuentaOrigen.setSaldo(nuevoSaldo);
+            String saldoFormateado = FormateadorMoneda.formatear(cuentaOrigen.getSaldo());
             System.out.println("Depósito realizado con éxito. Su nuevo saldo es: " + saldoFormateado);
         } else {
             System.out.println("El monto debe ser mayor que 0.");
