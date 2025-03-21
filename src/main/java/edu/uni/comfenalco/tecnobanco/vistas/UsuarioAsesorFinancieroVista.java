@@ -3,11 +3,14 @@ package edu.uni.comfenalco.tecnobanco.vistas;
 import java.util.Scanner;
 
 import edu.uni.comfenalco.tecnobanco.modelo.Usuario;
+import edu.uni.comfenalco.tecnobanco.seguridad.SesionUsuario;
 
 public class UsuarioAsesorFinancieroVista {
     private static Scanner scanner = new Scanner(System.in);
 
-    public static void mostrarMenu(Usuario usuario) {
+    public static void mostrarMenu() {
+        Usuario usuario = SesionUsuario.getUsuarioAutenticado();
+
         boolean salirDelPrograma = false;
 
         while (!salirDelPrograma) {
@@ -39,7 +42,7 @@ public class UsuarioAsesorFinancieroVista {
                     System.out.println("Mostrar informacion del usuario...");
                     break;
                 case 4:
-                    System.out.println("Cerrando sesión...");
+                    SesionUsuario.cerrarSesion();
                     salirDelPrograma = true;
                     break;
                 default:

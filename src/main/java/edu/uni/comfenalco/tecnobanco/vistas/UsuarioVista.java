@@ -3,6 +3,7 @@ package edu.uni.comfenalco.tecnobanco.vistas;
 import java.util.Scanner;
 
 import edu.uni.comfenalco.tecnobanco.modelo.Usuario;
+import edu.uni.comfenalco.tecnobanco.seguridad.SesionUsuario;
 import edu.uni.comfenalco.tecnobanco.servicios.DepositoServicio;
 import edu.uni.comfenalco.tecnobanco.servicios.TransferenciaServicio;
 import edu.uni.comfenalco.tecnobanco.util.FormateadorMoneda;
@@ -24,9 +25,10 @@ public class UsuarioVista {
     /**
      * Muestra el menú principal y maneja las opciones seleccionadas por el usuario.
      * 
-     * @param usuario El usuario autenticado.
      */
-    public static void mostrarMenu(Usuario usuario) {
+    public static void mostrarMenu() {
+        Usuario usuario = SesionUsuario.getUsuarioAutenticado();
+
         boolean salirDelPrograma = false;
 
         while (!salirDelPrograma) {
@@ -63,8 +65,8 @@ public class UsuarioVista {
                 case 4:
                     mostrarInformacionUsuario(usuario);
                     break;
-                case 5:
-                    System.out.println("Cerrando sesión...");
+                case 5:                    
+                    SesionUsuario.cerrarSesion();
                     salirDelPrograma = true;
                     break;
                 default:

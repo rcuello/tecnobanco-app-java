@@ -6,15 +6,14 @@ import java.util.Scanner;
 import edu.uni.comfenalco.tecnobanco.modelo.RolUsuario;
 import edu.uni.comfenalco.tecnobanco.modelo.Usuario;
 import edu.uni.comfenalco.tecnobanco.repositorio.UsuarioRepositorio;
+import edu.uni.comfenalco.tecnobanco.seguridad.SesionUsuario;
 import edu.uni.comfenalco.tecnobanco.util.ConsolaDialogo;
 import edu.uni.comfenalco.tecnobanco.util.ConsolaUtil;
 import edu.uni.comfenalco.tecnobanco.vistas.AutorVista;
 import edu.uni.comfenalco.tecnobanco.vistas.UsuarioAsesorFinancieroVista;
 import edu.uni.comfenalco.tecnobanco.vistas.UsuarioVista;
 
-public class Aplicacion {
-
-    private static Usuario usuarioAutenticado;
+public class Aplicacion {    
 
     public static void main(String[] args) {
 
@@ -58,7 +57,10 @@ public class Aplicacion {
         } catch (NoSuchElementException e) {
             // Esta excepción ocurre cuando se interrumpe la entrada (Ctrl+C)
             System.out.println("\nOperación cancelada por el usuario.");
-        } catch (Exception e) {
+        } catch(IllegalArgumentException e){
+            System.out.println("Ocurrió un error de validación: " + e.getMessage());
+        }
+        catch (Exception e) {
             // Capturamos cualquier otra excepción no esperada
             System.out.println("Ocurrió un error inesperado: " + e.getMessage());
 
@@ -81,24 +83,26 @@ public class Aplicacion {
         // Solicitar y validar la contraseña del usuario
         String usuarioClave = ConsolaUtil.solicitarContrasenia(scanner);
 
-        usuarioAutenticado = UsuarioRepositorio.obtenerUsuarioAutenticado(usuarioNombre, usuarioClave);
+        Usuario usuarioAutenticado = UsuarioRepositorio.obtenerUsuarioAutenticado(usuarioNombre, usuarioClave);
 
         if (usuarioAutenticado != null) {
             ConsolaDialogo.mostrarInicioSesionExitoso();
 
-            RolUsuario rolUsuario = usuarioAutenticado.getRol();
+            SesionUsuario.guardarUsuarioAutenticado(usuarioAutenticado);
+
+            RolUsuario rolUsuario = SesionUsuario.getUsuarioAutenticado().getRol();
 
             switch (rolUsuario) {
                 case CLIENTE:
                     // Llamamos a la vista del menú para manejar la interacción con el usuario
                     // "Cliente".
-                    UsuarioVista.mostrarMenu(usuarioAutenticado);
+                    UsuarioVista.mostrarMenu();
                     break;
 
                 case ASESOR_FINANCIERO:
                     // Llamamos a la vista del menú para manejar la interacción con el usuario
                     // "Asesor Financiero".
-                    UsuarioAsesorFinancieroVista.mostrarMenu(usuarioAutenticado);
+                    UsuarioAsesorFinancieroVista.mostrarMenu();
                     break;
 
                 default:
